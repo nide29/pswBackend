@@ -12,7 +12,8 @@ public class UtenteService {
     private UtenteRepository utenteRepository;
 
     //facciamo prima i metodi CRUD (CReate Update Delete)
-    @Transactional //readOnly di default sta a false, lo mettiamo a true solo quadndo vogliamo leggere (es. find)
-    public long saveUtente
+   // @Transactional //readOnly di default sta a false, lo mettiamo a true solo quadndo vogliamo leggere (es. find)
+    //public long saveUtente()
+    
 
 }

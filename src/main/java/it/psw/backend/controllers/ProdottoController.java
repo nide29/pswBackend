@@ -4,9 +4,12 @@ import it.psw.backend.exceptions.ProdottoEsistenteException;
 import it.psw.backend.exceptions.ProdottoNotFoundException;
 import it.psw.backend.model.Prodotto;
 import it.psw.backend.services.ProdottoService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity; 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,7 +43,11 @@ public class ProdottoController {
     }
 
 
-    @GetMapping
+  /*  @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<Prodotto>>findByNome(@PathVariable("nome") String nome){
+        return prodottoService
+        
+    }*/
 
 
 }//ProdottoController

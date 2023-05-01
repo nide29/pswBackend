@@ -7,6 +7,7 @@ import it.psw.backend.services.ProdottoService;
 
 import java.util.List;
 
+import it.psw.backend.support.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity; 
@@ -42,12 +43,32 @@ public class ProdottoController {
         return new ResponseEntity<>(Long.parseLong(id), HttpStatus.OK);
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<?> findByNome(@PathVariable("nome") String nome) {
+        List<Prodotto> prodotti = prodottoService.findByNome(nome);
+        if (prodotti.size() <= 0) {
+            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(prodotti, HttpStatus.OK);
+    }
 
-  /*  @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Prodotto>>findByNome(@PathVariable("nome") String nome){
-        return prodottoService
-        
-    }*/
+    @GetMapping("/marca/{marca}")
+    public ResponseEntity<?> findByMarca(@PathVariable("marca") String marca) {
+        List<Prodotto> prodotti = prodottoService.findByMarca(marca);
+        if (prodotti.size() <= 0) {
+            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(prodotti, HttpStatus.OK);
+    }
+
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<?> findByCategoria(@PathVariable("categoria") String categoria) {
+        List<Prodotto> prodotti = prodottoService.findByCategoria(categoria);
+        if (prodotti.size() <= 0) {
+            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(prodotti, HttpStatus.OK);
+    }
 
 
 }//ProdottoController

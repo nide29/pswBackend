@@ -19,13 +19,13 @@ public class ProdottoService {
         Prodotto p = prodottoRepository.save(prodotto);
         return p.getId();
     }//save
-    @Transactional
 
+    @Transactional
     public void update(Prodotto prodotto) {
         prodottoRepository.save(prodotto);
     }//update
-    @Transactional
 
+    @Transactional
     public void delete(long idProdotto) {
         try {
             prodottoRepository.deleteById(idProdotto);
@@ -52,13 +52,13 @@ public class ProdottoService {
     public boolean existsByNome(String nome) {
         return prodottoRepository.existsByNome(nome);
     }
-    @Transactional(readOnly = true)
 
+    @Transactional(readOnly = true)
     public boolean existsByMarca(String marca) {
         return prodottoRepository.existsByMarca(marca);
     }
-    @Transactional(readOnly = true)
 
+    @Transactional(readOnly = true)
     public boolean existsByCategoria(String categoria) {
         return prodottoRepository.existsByCategoria(categoria);
     }

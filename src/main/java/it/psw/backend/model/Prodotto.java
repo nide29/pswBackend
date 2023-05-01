@@ -47,4 +47,5 @@ public class Prodotto {
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodottiNelCarrello;
 
+
 }//Prodotto

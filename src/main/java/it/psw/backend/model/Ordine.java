@@ -40,6 +40,4 @@ public class Ordine {
     private Set<ProdottoNelCarrello> prodotti;
 
 
-
-
 }//Ordine

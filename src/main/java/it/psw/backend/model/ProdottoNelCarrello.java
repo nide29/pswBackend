@@ -33,4 +33,5 @@ public class ProdottoNelCarrello {
     @JoinColumn(name = "ordine")
     private Ordine ordine;
 
+
 }//ProdottoNelCarrello

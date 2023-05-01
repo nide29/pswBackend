@@ -1,10 +1,7 @@
 package it.psw.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Set;
 
@@ -15,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 @Table(name = "ordine", schema = "psw")
 public class Ordine {
     @Id
@@ -38,6 +36,14 @@ public class Ordine {
     @JsonIgnore
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodotti;
+
+    public Ordine(long id, double importo, String dataAcquisto, Utente acquirente, Set<ProdottoNelCarrello> prodotti) {
+        this.id = id;
+        this.importo = importo;
+        this.dataAcquisto = dataAcquisto;
+        this.acquirente = acquirente;
+        this.prodotti.addAll(prodotti); // avevo usato il for each ma intellij ha consigliato questo metodo
+    }//Constructor
 
 
 }//Ordine

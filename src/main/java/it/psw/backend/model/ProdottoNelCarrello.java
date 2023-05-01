@@ -1,9 +1,6 @@
 package it.psw.backend.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.core.PriorityOrdered;
 
 import javax.persistence.*;
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 @Table(name = "prodottoNelCarrello", schema = "psw")
 public class ProdottoNelCarrello {
 
@@ -32,6 +30,14 @@ public class ProdottoNelCarrello {
     @ManyToOne
     @JoinColumn(name = "ordine")
     private Ordine ordine;
+
+
+    public ProdottoNelCarrello(long id, int quantita, Prodotto prodotto, Ordine ordine) {
+        this.id = id;
+        this.quantita = quantita;
+        this.prodotto = prodotto;
+        this.ordine = ordine;
+    }//Constructor
 
 
 }//ProdottoNelCarrello

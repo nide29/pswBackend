@@ -1,9 +1,6 @@
 package it.psw.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,6 +10,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 @Table(name = "utente", schema = "psw")
 public class Utente {
     @Id
@@ -40,5 +38,15 @@ public class Utente {
     @JsonIgnore
     @ToString.Exclude
     private Set<Ordine> ordini;
+
+
+    public Utente(long id, String nome, String cognome, String email, String password) {
+        this.id = id;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.password = password;
+    }//Constructor
+
 
 }//Utente

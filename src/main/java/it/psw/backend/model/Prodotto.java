@@ -1,10 +1,7 @@
 package it.psw.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,6 +11,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 @Table(name = "prodotto", schema = "psw")
 public class Prodotto {
 
@@ -47,5 +45,14 @@ public class Prodotto {
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodottiNelCarrello;
 
+
+    public Prodotto(long id, String nome, String descrizione, String marca, String categoria, double prezzo) {
+        this.id = id;
+        this.nome = nome;
+        this.descrizione = descrizione;
+        this.marca = marca;
+        this.categoria = categoria;
+        this.prezzo = prezzo;
+    }//Constructor
 
 }//Prodotto

@@ -1,5 +1,6 @@
 package it.psw.backend.services;
 import it.psw.backend.exceptions.DeleteException;
+import it.psw.backend.exceptions.ProdottoNotFoundException;
 import it.psw.backend.model.Prodotto;
 import it.psw.backend.repositories.ProdottoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdottoService {
@@ -32,6 +34,19 @@ public class ProdottoService {
             prodottoRepository.flush();
         } catch (Exception e) {throw new DeleteException("Eliminazione non riuscita!");}
     }//delete
+
+    @Transactional(readOnly = true)
+    public List<Prodotto> findAll() {
+        return prodottoRepository.findAll();
+    }//findAll
+
+    @Transactional(readOnly = true)
+    public Prodotto findById(long id) {
+        if (!prodottoRepository.existsById(id)) throw new ProdottoNotFoundException("Prodotto non esistente");
+        if (!prodottoRepository.findById(id).isPresent()) throw new ProdottoNotFoundException("Prodotto non trovato");
+        //return prodottoRepository.getById(id);
+        return prodottoRepository.findById(id).get();
+    }//getById
 
     @Transactional(readOnly = true)
     public List<Prodotto> findByNome(String nome) {

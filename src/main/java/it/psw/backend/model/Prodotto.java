@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -13,7 +14,7 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @Table(name = "prodotto", schema = "psw")
-public class Prodotto {
+public class Prodotto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,11 +22,11 @@ public class Prodotto {
     private long id;
 
     @Basic
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", nullable = false )
     private String nome;
 
     @Basic
-    @Column(name = "descrizione", nullable = false)
+    @Column(name = "descrizione",nullable = false)
     private String descrizione;
 
     @Basic

@@ -10,18 +10,20 @@ import java.util.List;
 import it.psw.backend.support.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity; 
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/prodotto")
+@Validated
 public class ProdottoController {
 
     @Autowired
     private ProdottoService prodottoService;
 
     @PostMapping()
-    public ResponseEntity<?> creaProdotto(Prodotto prodotto) {
+    public ResponseEntity<?> creaProdotto(@Validated @RequestBody Prodotto prodotto) {
         if(prodottoService.existsByNome(prodotto.getNome())) {
             throw new ProdottoEsistenteException("Il prodotto è già esistente");
         }
@@ -30,9 +32,15 @@ public class ProdottoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Long> updateProdotto(@PathVariable("id") String id, Prodotto prodotto) {
+    public ResponseEntity<Long> updateProdotto(@PathVariable("id") String id, @RequestBody Prodotto prodotto) {
         if(!prodottoService.existsById(Long.parseLong(id))) throw new ProdottoNotFoundException("Prodotto non trovato");
-        long idProdotto = prodottoService.save(prodotto);
+        Prodotto daAggiornare = prodottoService.findById(Long.parseLong(id));
+        daAggiornare.setNome(prodotto.getNome());
+        daAggiornare.setDescrizione(prodotto.getDescrizione());
+        daAggiornare.setMarca(prodotto.getMarca());
+        daAggiornare.setCategoria(prodotto.getCategoria());
+        daAggiornare.setPrezzo(prodotto.getPrezzo());
+        long idProdotto = prodottoService.save(daAggiornare);
         return new ResponseEntity<>(idProdotto, HttpStatus.OK);
     }
 
@@ -43,8 +51,20 @@ public class ProdottoController {
         return new ResponseEntity<>(Long.parseLong(id), HttpStatus.OK);
     }
 
-    @GetMapping("/nome/{nome}")
-    public ResponseEntity<?> findByNome(@PathVariable("nome") String nome) {
+   @GetMapping()  // vedere la differenza tra "/nome/{nome} e "/{nome}"
+    public ResponseEntity<?> findAll() {
+        List<Prodotto> prodotti = prodottoService.findAll();
+        return new ResponseEntity<>(prodotti, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")  // vedere la differenza tra "/nome/{nome} e "/{nome}"
+    public ResponseEntity<Prodotto> findById(@PathVariable("id") String id) {
+        Prodotto prodotto = prodottoService.findById(Long.parseLong(id));
+        return new ResponseEntity<>(prodotto, HttpStatus.OK);
+    }
+
+    @GetMapping("/nome")  // vedere la differenza tra "/nome/{nome} e "/{nome}"
+    public ResponseEntity<?> findByNome(@RequestParam("nome") String nome) {
         List<Prodotto> prodotti = prodottoService.findByNome(nome);
         if (prodotti.size() <= 0) {
             return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
@@ -52,8 +72,8 @@ public class ProdottoController {
         return new ResponseEntity<>(prodotti, HttpStatus.OK);
     }
 
-    @GetMapping("/marca/{marca}")
-    public ResponseEntity<?> findByMarca(@PathVariable("marca") String marca) {
+    @GetMapping("/marca")
+    public ResponseEntity<?> findByMarca(@RequestParam("marca") String marca) {
         List<Prodotto> prodotti = prodottoService.findByMarca(marca);
         if (prodotti.size() <= 0) {
             return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
@@ -61,8 +81,8 @@ public class ProdottoController {
         return new ResponseEntity<>(prodotti, HttpStatus.OK);
     }
 
-    @GetMapping("/categoria/{categoria}")
-    public ResponseEntity<?> findByCategoria(@PathVariable("categoria") String categoria) {
+    @GetMapping("/categoria")
+    public ResponseEntity<?> findByCategoria(@RequestParam("categoria") String categoria) {
         List<Prodotto> prodotti = prodottoService.findByCategoria(categoria);
         if (prodotti.size() <= 0) {
             return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);

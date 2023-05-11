@@ -1,4 +1,4 @@
-package it.psw.backend.exceptions;
+package it.psw.backend.support.exceptions;
 
 import org.hibernate.sql.Delete;
 import org.springframework.http.HttpStatus;

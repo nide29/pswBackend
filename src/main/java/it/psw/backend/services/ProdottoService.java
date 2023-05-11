@@ -1,6 +1,6 @@
 package it.psw.backend.services;
-import it.psw.backend.exceptions.DeleteException;
-import it.psw.backend.exceptions.ProdottoNotFoundException;
+import it.psw.backend.support.exceptions.DeleteException;
+import it.psw.backend.support.exceptions.ProdottoNotFoundException;
 import it.psw.backend.model.Prodotto;
 import it.psw.backend.repositories.ProdottoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProdottoService {

@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -10,9 +11,10 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 @ToString
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "utente", schema = "psw")
-public class Utente {
+public class Utente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true) //nullable e unique li mette di default l'annotazione @Id
@@ -39,7 +41,7 @@ public class Utente {
     @ToString.Exclude
     private Set<Ordine> ordini;
 
-
+    /*
     public Utente(long id, String nome, String cognome, String email, String password) {
         this.id = id;
         this.nome = nome;
@@ -47,6 +49,6 @@ public class Utente {
         this.email = email;
         this.password = password;
     }//Constructor
-
+    */
 
 }//Utente

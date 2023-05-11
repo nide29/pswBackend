@@ -1,7 +1,7 @@
 package it.psw.backend.controllers;
 
-import it.psw.backend.exceptions.ProdottoEsistenteException;
-import it.psw.backend.exceptions.ProdottoNotFoundException;
+import it.psw.backend.support.exceptions.ProdottoEsistenteException;
+import it.psw.backend.support.exceptions.ProdottoNotFoundException;
 import it.psw.backend.model.Prodotto;
 import it.psw.backend.services.ProdottoService;
 

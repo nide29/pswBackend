@@ -12,6 +12,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 @ToString
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "prodotto", schema = "psw")
 public class Prodotto implements Serializable {
@@ -41,12 +42,16 @@ public class Prodotto implements Serializable {
     @Column(name = "prezzo", nullable = false)
     private double prezzo;
 
+    @Basic
+    @Column(name = "quantita", nullable = false)
+    private int quantita;
+
     @OneToMany(mappedBy = "prodotto")
     @JsonIgnore
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodottiNelCarrello;
 
-
+    /*
     public Prodotto(long id, String nome, String descrizione, String marca, String categoria, double prezzo) {
         this.id = id;
         this.nome = nome;
@@ -55,5 +60,6 @@ public class Prodotto implements Serializable {
         this.categoria = categoria;
         this.prezzo = prezzo;
     }//Constructor
+     */
 
 }//Prodotto

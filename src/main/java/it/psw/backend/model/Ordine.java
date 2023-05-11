@@ -3,6 +3,7 @@ package it.psw.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -12,9 +13,10 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode
 @ToString
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ordine", schema = "psw")
-public class Ordine {
+public class Ordine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
@@ -37,6 +39,7 @@ public class Ordine {
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodotti;
 
+    /*
     public Ordine(long id, double importo, String dataAcquisto, Utente acquirente, Set<ProdottoNelCarrello> prodotti) {
         this.id = id;
         this.importo = importo;
@@ -44,6 +47,6 @@ public class Ordine {
         this.acquirente = acquirente;
         this.prodotti.addAll(prodotti); // avevo usato il for each ma intellij ha consigliato questo metodo
     }//Constructor
-
+    */
 
 }//Ordine

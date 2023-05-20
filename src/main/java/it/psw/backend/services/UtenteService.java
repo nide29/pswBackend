@@ -1,17 +1,16 @@
 package it.psw.backend.services;
 
-import it.psw.backend.support.ResponseMessage;
+
 import it.psw.backend.support.exceptions.UtenteEsistenteException;
 import it.psw.backend.support.exceptions.UtenteNonEsistenteException;
 import it.psw.backend.model.Utente;
 import it.psw.backend.repositories.UtenteRepository;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +19,12 @@ import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.ClientResource;
-import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
 import javax.ws.rs.core.Response;
-import java.util.Collections;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -45,8 +40,8 @@ public class UtenteService {
     private String realm;
     @Value("${clientid}")
     private String clientId;
-    //@Value("${clientsecret}")
-    private String clientSecret="";
+    @Value("${clientsecret}")
+    private String clientSecret;
     @Value("${usernameadmin}")
     private String username_admin;
     @Value("${passwordadmin}")
@@ -70,11 +65,15 @@ public class UtenteService {
 
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(true);
-        user.setUsername(utente.getEmail());
+        user.setUsername(utente.getNome().toLowerCase()+utente.getCognome().toLowerCase());
+        user.setFirstName(utente.getNome());
+        user.setLastName(utente.getCognome());
         user.setEmail(utente.getEmail());
         user.setAttributes(Collections.singletonMap("origin", Arrays.asList("demo")));
+
         RealmResource realmResource = keycloak.realm(realm);
         UsersResource usersResource = realmResource.users();
+
         CredentialRepresentation passwordCred = new CredentialRepresentation();
         passwordCred.setTemporary(false);
         passwordCred.setType(CredentialRepresentation.PASSWORD);
@@ -82,7 +81,9 @@ public class UtenteService {
         List<CredentialRepresentation> l = new LinkedList<>();
         l.add(passwordCred);
         user.setCredentials(l);
+
         Response response = usersResource.create(user);
+
         String userId = CreatedResponseUtil.getCreatedId(response);
         usersResource = keycloak.realm(realm).users();
         UserResource userResource = usersResource.get(userId);
@@ -98,6 +99,7 @@ public class UtenteService {
         return utenteRepository.save(utente);
 
     }//creaUtente
+
 
 
     @Transactional
@@ -153,6 +155,7 @@ public class UtenteService {
     public boolean existsByCognome(String cognome){
         return utenteRepository.existsByCognome(cognome);
     }//existByCognome
+
 
 
 }//UtenteService

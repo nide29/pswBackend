@@ -1,5 +1,6 @@
 package it.psw.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.core.PriorityOrdered;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "prodottoNelCarrello", schema = "psw")
+@Table(name = "prodotto_nel_carrello", schema = "psw")
 public class ProdottoNelCarrello implements Serializable {
 
     @Id
@@ -31,6 +32,7 @@ public class ProdottoNelCarrello implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ordine")
+    @JsonIgnore
     private Ordine ordine;
 
     /*

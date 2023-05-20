@@ -1,0 +1,92 @@
+package it.psw.backend.controllers;
+
+import it.psw.backend.model.Ordine;
+import it.psw.backend.model.Utente;
+import it.psw.backend.services.OrdineService;
+import it.psw.backend.services.UtenteService;
+import it.psw.backend.support.ResponseMessage;
+import it.psw.backend.support.exceptions.OrdineNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/ordine")
+@Validated
+public class OrdineController {
+
+    @Autowired
+    private OrdineService ordineService;
+
+    @Autowired
+    private UtenteService utenteService;
+
+    @PostMapping
+    public ResponseEntity<?> creaOrdine(@RequestBody Ordine ordine) {
+        Ordine risultato = ordineService.creaOrdine(ordine);
+        if(risultato == null) {
+            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(risultato, HttpStatus.OK);
+    }//aggiungiOrdine
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> aggiornaOrdine(@PathVariable("id") String id, @RequestBody Ordine ordine) {
+        if(!ordineService.existById(Long.parseLong(id))) {throw new OrdineNotFoundException("Ordine non esistente!");}
+        Ordine daAggiornare = ordineService.findById(Long.parseLong(id));
+        daAggiornare.setAcquirente(ordine.getAcquirente());
+        daAggiornare.setImporto(ordine.getImporto());
+        daAggiornare.setProdotti(ordine.getProdotti());
+        daAggiornare.setDataAcquisto(ordine.getDataAcquisto());
+        long idOrdine = ordineService.creaOrdine(daAggiornare).getId();
+        return new ResponseEntity<>(idOrdine, HttpStatus.OK);
+    }//aggiornaOrdine
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> deleteOrdine(@PathVariable("id") String id) {
+        ordineService.deleteOrdine(Long.parseLong(id));
+        return new ResponseEntity<>(Long.parseLong(id), HttpStatus.OK);
+    }//deleteOrdine
+
+    @GetMapping()
+    public ResponseEntity<?> findAll() {
+        List<Ordine> ordini = ordineService.findAll();
+        return new ResponseEntity<>(ordini, HttpStatus.OK);
+    }//findAll
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id") String id) {
+        Ordine ordine = ordineService.findById(Long.parseLong(id));
+        if(ordine == null) {
+            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ordine, HttpStatus.OK);
+    }//findById
+
+    @GetMapping("/dataAcquisto")
+    public ResponseEntity<?> findByDataAcquisto(@RequestParam("dataAcquisto") String data) {
+        List<Ordine> ordini = ordineService.findByDataAcquisto(data);
+        if(ordini.size() == 0) {
+            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ordini, HttpStatus.OK);
+    }//findByDataAcquisto
+
+    @GetMapping("/acquirente")
+    public ResponseEntity<?> findByAcquirente(@RequestParam(value = "email") String email) {
+        Utente utente = utenteService.findByEmail(email);
+        List<Ordine> ordini = ordineService.findByAcquirente(utente);
+        if(ordini.size() == 0) {
+            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ordini, HttpStatus.OK);
+    }//findByAcquirente
+
+
+
+
+}//OrdineControllo

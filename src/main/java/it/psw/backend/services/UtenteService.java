@@ -5,6 +5,7 @@ import it.psw.backend.support.exceptions.UtenteEsistenteException;
 import it.psw.backend.support.exceptions.UtenteNonEsistenteException;
 import it.psw.backend.model.Utente;
 import it.psw.backend.repositories.UtenteRepository;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -25,14 +26,18 @@ import org.keycloak.representations.idm.UserRepresentation;
 
 import javax.ws.rs.core.Response;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
 
 @Service
 public class UtenteService {
-    @Autowired
-    private UtenteRepository utenteRepository;
+    //@Autowired
+    //private UtenteRepository utenteRepository;
+
+
+
 
     @Value("${keycloak.auth-server-url}")
     private String serverUrl;
@@ -40,7 +45,7 @@ public class UtenteService {
     private String realm;
     @Value("${clientid}")
     private String clientId;
-    @Value("${clientsecret}")
+    @Value("")
     private String clientSecret;
     @Value("${usernameadmin}")
     private String username_admin;
@@ -48,11 +53,17 @@ public class UtenteService {
     private String password_admin;
 
 
+    private final UtenteRepository utenteRepository;
+    @Autowired
+    public UtenteService(UtenteRepository utenteRepository) {this.utenteRepository = utenteRepository;}
+
+
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Utente creaUtente(Utente utente) {
-        if (utenteRepository.existsByEmail(utente.getEmail())) {
-            throw new UtenteEsistenteException("Utente già esistente!");
-        }
+        if (utenteRepository.findByEmail(utente.getEmail())!=null)
+            throw new UtenteEsistenteException("Utente already exist!!");
+
         Keycloak keycloak = KeycloakBuilder.builder()
                 .serverUrl(serverUrl)
                 .realm(realm)
@@ -83,7 +94,6 @@ public class UtenteService {
         user.setCredentials(l);
 
         Response response = usersResource.create(user);
-
         String userId = CreatedResponseUtil.getCreatedId(response);
         usersResource = keycloak.realm(realm).users();
         UserResource userResource = usersResource.get(userId);
@@ -97,10 +107,7 @@ public class UtenteService {
         userResource.roles().clientLevel(clientRepresentation.getId()).add(Collections.singletonList(roleRepresentation));
 
         return utenteRepository.save(utente);
-
     }//creaUtente
-
-
 
     @Transactional
     public void aggiornaUtente(Utente utente) {
@@ -110,11 +117,39 @@ public class UtenteService {
         utenteRepository.save(utente);
     }//updateUtente
 
+
+    @Transactional
+    public void cancellaUtente(String id){
+        Utente utente = utenteRepository.findById(Long.parseLong(id));
+        if (!utenteRepository.existsById(Long.parseLong(id))) {
+            throw new UtenteNonEsistenteException("Utente non esistente!");
+        }
+
+        Keycloak keycloak = KeycloakBuilder.builder()
+                .serverUrl(serverUrl)
+                .realm(realm)
+                .grantType(OAuth2Constants.PASSWORD)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .username(username_admin)
+                .password(password_admin)
+                .build();
+
+        String username = utente.getNome().toLowerCase()+utente.getCognome().toLowerCase();
+        List<UserRepresentation> userList = keycloak.realm(realm).users().search(username);
+        for (UserRepresentation user : userList) {
+            if (user.getUsername().equals(username)) {
+                keycloak.realm(realm).users().delete(user.getId());
+            }
+        }
+        utenteRepository.delete(utente);
+    }//cancellaUtente
+
+
     @Transactional(readOnly = true)
     public List<Utente> findAll() {
         return utenteRepository.findAll();
     }//findAll
-
 
     @Transactional(readOnly = true)
     public Utente findByEmail(String email) {

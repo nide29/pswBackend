@@ -5,12 +5,15 @@ import it.psw.backend.model.Utente;
 import it.psw.backend.services.UtenteService;
 import it.psw.backend.support.ResponseMessage;
 import it.psw.backend.support.exceptions.UtenteEsistenteException;
+import it.psw.backend.support.exceptions.UtenteNonEsistenteException;
+import org.keycloak.authorization.client.util.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -20,16 +23,21 @@ import java.util.List;
 public class UtenteController {
 
     @Autowired
-    UtenteService utenteService;
+    private UtenteService utenteService;
+
+    @Autowired
+    private UtenteController(UtenteService utenteService) {
+        this.utenteService = utenteService;
+    }
 
 
     @PostMapping
-    public ResponseEntity<?> creaUtente(@Validated @RequestBody Utente utente) {
+    public ResponseEntity<?> creaUtente(@RequestBody @Valid Utente utente) {
         if(utenteService.existsByEmail(utente.getEmail())) {
             throw new UtenteEsistenteException("L'utente è già esistente!");
         }
-        utenteService.creaUtente(utente);
-        return new ResponseEntity<>(utente.getId(), HttpStatus.OK);
+        Utente risultato = utenteService.creaUtente(utente);
+        return new ResponseEntity<>(risultato.getId(), HttpStatus.OK);
     }//creaUtente
 
     @PutMapping("/{id}")
@@ -45,6 +53,15 @@ public class UtenteController {
         utenteService.aggiornaUtente(daAggiornare);
         return new ResponseEntity<>(daAggiornare.getId(), HttpStatus.OK);
     }//aggiornaUtente
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> cancellaUtente(@PathVariable("id") String id) {
+        if(!utenteService.existsById(Long.parseLong(id))) {
+            return new ResponseEntity<>(new ResponseMessage("Utente non esistente!"), HttpStatus.OK);
+        }
+        utenteService.cancellaUtente(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }//cancellaUtente
 
     @GetMapping()
     public ResponseEntity<?> findAll() {

@@ -17,4 +17,9 @@ public class ProdottoNelCarrelloService {
         return prodottoNelCarrelloRepository.save(prodottoNelCarrello);
     }//aggiungiProdotto
 
+    @Transactional(readOnly = true)
+    public ProdottoNelCarrello getById(long id){
+        return prodottoNelCarrelloRepository.getById(id);
+    }
+
 }//ProdottoNelCarrelloService

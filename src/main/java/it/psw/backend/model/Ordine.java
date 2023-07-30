@@ -19,9 +19,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
+//@EqualsAndHashCode
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ordine", schema = "psw")
 public class Ordine implements Serializable {
@@ -39,15 +38,21 @@ public class Ordine implements Serializable {
     @Column(name = "data_acquisto", nullable = false)
     private Date dataAcquisto;
 
-    @ManyToOne
+    @ManyToOne()
     //@JsonBackReference
     @JoinColumn(name = "acquirente") //JOIN COLUMN STA SOLO NELLA MANY TO ONE
     private Utente acquirente;
 
-    @OneToMany(mappedBy = "ordine")
-    @JsonIgnore
+    @OneToMany(mappedBy = "ordine", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodotti;
+
+    public Ordine (double importo, Date dataAcquisto, Utente acquirente, Set<ProdottoNelCarrello> prodotti){
+        this.importo=importo;
+        this.dataAcquisto=dataAcquisto;
+        this.acquirente=acquirente;
+        this.prodotti=prodotti;
+    }
 
 
 

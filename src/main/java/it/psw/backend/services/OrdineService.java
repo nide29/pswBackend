@@ -10,13 +10,13 @@ import it.psw.backend.repositories.UtenteRepository;
 import it.psw.backend.support.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class OrdineService {
@@ -33,12 +33,12 @@ public class OrdineService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {QuantitaNonDisponibileException.class})
     public Ordine creaOrdine(Ordine ordine) throws QuantitaNonDisponibileException {
-        Ordine result = ordineRepository.save(ordine);
+       Ordine result = ordineRepository.save(new Ordine(ordine.getImporto(), ordine.getDataAcquisto(),ordine.getAcquirente(), ordine.getProdotti()));
         for(ProdottoNelCarrello pnc : ordine.getProdotti()) {
             pnc.setOrdine(result);
-            prodottoNelCarrelloRepository.save(pnc);
+            prodottoNelCarrelloRepository.save(new ProdottoNelCarrello(result, pnc.getQuantita(), pnc.getProdotto()));
             Prodotto prodotto = pnc.getProdotto();
             int newQuantity = prodotto.getQuantita() - pnc.getQuantita();
             if (newQuantity < 0) {
@@ -60,10 +60,12 @@ public class OrdineService {
 
     @Transactional
     public void deleteOrdine(long idOrdine) {
-        try {
-            ordineRepository.deleteById(idOrdine);
-            ordineRepository.flush();
-        } catch (Exception e) {throw new DeleteException("Eliminazione non riuscita!");}
+        if(!ordineRepository.existsById(idOrdine)){
+            throw new OrdineNotFoundException("Ordine non esistente!");
+        }
+        Ordine ordine = ordineRepository.getById(idOrdine);
+        ordineRepository.delete(ordine);
+        ordineRepository.flush();
     }//deleteOrdine
 
     @Transactional(readOnly = true)

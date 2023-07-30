@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
+//@EqualsAndHashCode
 @ToString
 //@AllArgsConstructor
 @NoArgsConstructor
@@ -40,7 +40,8 @@ public class ProdottoNelCarrello implements Serializable {
     private Ordine ordine;
 
 
-    public ProdottoNelCarrello( int quantita, Prodotto prodotto) {
+    public ProdottoNelCarrello(Ordine ordine, int quantita, Prodotto prodotto) {
+        this.ordine = ordine;
         this.quantita = quantita;
         this.prodotto = prodotto;
     }//Constructor

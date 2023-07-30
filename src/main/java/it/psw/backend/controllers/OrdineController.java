@@ -28,8 +28,10 @@ public class OrdineController {
     private UtenteService utenteService;
 
     @PostMapping
-    public ResponseEntity<?> creaOrdine(@RequestBody Ordine ordine) {
-        Ordine risultato = ordineService.creaOrdine(ordine);
+    public ResponseEntity<?> creaOrdine(@RequestBody Ordine request) {
+        System.out.println(request);
+
+        Ordine risultato = ordineService.creaOrdine(request);
         if(risultato == null) {
             return new ResponseEntity<>(new ResponseMessage("Errore nella creazione dell'ordine"), HttpStatus.OK);
         }

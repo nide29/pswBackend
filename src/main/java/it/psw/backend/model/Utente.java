@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
+//@EqualsAndHashCode
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +37,7 @@ public class Utente implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "acquirente") // aggiungere cascade = CascadeType.*
+    @OneToMany(mappedBy = "acquirente", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER) // aggiungere cascade = CascadeType.*
     @JsonIgnore
     //@JsonManagedReference
     @ToString.Exclude

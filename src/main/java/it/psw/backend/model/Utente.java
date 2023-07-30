@@ -1,5 +1,6 @@
 package it.psw.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,17 +39,9 @@ public class Utente implements Serializable {
 
     @OneToMany(mappedBy = "acquirente") // aggiungere cascade = CascadeType.*
     @JsonIgnore
+    //@JsonManagedReference
     @ToString.Exclude
     private Set<Ordine> ordini;
 
-    /*
-    public Utente(long id, String nome, String cognome, String email, String password) {
-        this.id = id;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.email = email;
-        this.password = password;
-    }//Constructor
-    */
 
 }//Utente

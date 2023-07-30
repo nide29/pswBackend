@@ -1,9 +1,17 @@
 package it.psw.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import it.psw.backend.repositories.UtenteRepository;
+import it.psw.backend.services.UtenteService;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -27,10 +35,12 @@ public class Ordine implements Serializable {
     private double importo;
 
     @Basic
-    @Column(name = "dataAcquisto", nullable = false)
-    private String dataAcquisto;
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
+    @Column(name = "data_acquisto", nullable = false)
+    private Date dataAcquisto;
 
     @ManyToOne
+    //@JsonBackReference
     @JoinColumn(name = "acquirente") //JOIN COLUMN STA SOLO NELLA MANY TO ONE
     private Utente acquirente;
 
@@ -39,14 +49,6 @@ public class Ordine implements Serializable {
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodotti;
 
-    /*
-    public Ordine(long id, double importo, String dataAcquisto, Utente acquirente, Set<ProdottoNelCarrello> prodotti) {
-        this.id = id;
-        this.importo = importo;
-        this.dataAcquisto = dataAcquisto;
-        this.acquirente = acquirente;
-        this.prodotti.addAll(prodotti); // avevo usato il for each ma intellij ha consigliato questo metodo
-    }//Constructor
-    */
+
 
 }//Ordine

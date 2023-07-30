@@ -1,6 +1,7 @@
 package it.psw.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,6 +49,7 @@ public class Prodotto implements Serializable {
 
     @OneToMany(mappedBy = "prodotto")
     @JsonIgnore
+    //@JsonManagedReference
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodottiNelCarrello;
 

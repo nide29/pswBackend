@@ -1,6 +1,8 @@
 package it.psw.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.core.PriorityOrdered;
 
@@ -12,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @ToString
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "prodotto_nel_carrello", schema = "psw")
 public class ProdottoNelCarrello implements Serializable {
@@ -28,20 +30,20 @@ public class ProdottoNelCarrello implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "prodotto")
+    //@JsonBackReference
     private Prodotto prodotto;
 
     @ManyToOne
     @JoinColumn(name = "ordine")
     @JsonIgnore
+    //@JsonBackReference
     private Ordine ordine;
 
-    /*
-    public ProdottoNelCarrello(long id, int quantita, Prodotto prodotto, Ordine ordine) {
-        this.id = id;
+
+    public ProdottoNelCarrello( int quantita, Prodotto prodotto) {
         this.quantita = quantita;
         this.prodotto = prodotto;
-        this.ordine = ordine;
     }//Constructor
-    */
+
 
 }//ProdottoNelCarrello

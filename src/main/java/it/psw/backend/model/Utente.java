@@ -1,6 +1,5 @@
 package it.psw.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-//@EqualsAndHashCode
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +16,7 @@ import java.util.Set;
 public class Utente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true) //nullable e unique li mette di default l'annotazione @Id
+    @Column(name = "id", nullable = false, unique = true)
     private long id;
 
     @Basic
@@ -39,9 +37,7 @@ public class Utente implements Serializable {
 
     @OneToMany(mappedBy = "acquirente", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER) // aggiungere cascade = CascadeType.*
     @JsonIgnore
-    //@JsonManagedReference
     @ToString.Exclude
     private Set<Ordine> ordini;
-
 
 }//Utente

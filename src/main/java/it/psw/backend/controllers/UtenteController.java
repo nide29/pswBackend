@@ -5,8 +5,6 @@ import it.psw.backend.model.Utente;
 import it.psw.backend.services.UtenteService;
 import it.psw.backend.support.ResponseMessage;
 import it.psw.backend.support.exceptions.UtenteEsistenteException;
-import it.psw.backend.support.exceptions.UtenteNonEsistenteException;
-import org.keycloak.authorization.client.util.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

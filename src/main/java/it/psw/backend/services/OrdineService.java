@@ -68,11 +68,11 @@ public class OrdineService {
         ordineRepository.flush();
     }//deleteOrdine
 
+
     @Transactional(readOnly = true)
     public List<Ordine> findAll() {
         return ordineRepository.findAll();
     }//findAll
-
 
     @Transactional(readOnly = true)
     public Ordine findById(long id) {
@@ -81,13 +81,6 @@ public class OrdineService {
 
         return ordineRepository.findById(id).get();
     }//findById
-
-    /*
-    @Transactional(readOnly = true)
-    public List<Ordine> findByDataAcquisto(String data) {
-        return ordineRepository.findByDataAcquisto(Date.parse(data));
-    }//findByDAtaAcquisto
-    */
 
     @Transactional(readOnly = true)
     public List<Ordine> findByPeriodo(Utente acquirente, Date startDate, Date endDate) {
@@ -98,7 +91,7 @@ public class OrdineService {
             throw new DateWrongRangeException("Il range di date inserito non è ammisibile");
         }
         return ordineRepository.findByPeriodo(startDate, endDate, acquirente);
-    }//findByPeriodo --> restituirà tutti gli ordini la cui data di acquisto è compresa tra startDate e endDate
+    }//findByPeriodo --> restituirà tutti gli ordini effettuati dal'utente passato la cui data di acquisto è compresa tra startDate e endDate
 
     @Transactional(readOnly = true)
     public List<Ordine> findByAcquirente(Utente acquirente) {
@@ -106,18 +99,11 @@ public class OrdineService {
     }//findByDAtaAcquisto
 
 
+
     @Transactional(readOnly = true)
     public boolean existById(long id){
         return ordineRepository.existsById(id);
     }
-
-    /*
-    @Transactional(readOnly = true)
-    public boolean existByDataAcquisto(String data){
-        return ordineRepository.existsByDataAcquisto(data);
-    }
-    */
-
 
     @Transactional(readOnly = true)
     public boolean existByAcquirente(Utente acquirente){

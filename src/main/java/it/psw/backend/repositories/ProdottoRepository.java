@@ -22,4 +22,5 @@ public interface ProdottoRepository extends JpaRepository<Prodotto, Long> {
 
     @Override
     boolean existsById(Long id);
-}
+
+}//ProdottoRepository

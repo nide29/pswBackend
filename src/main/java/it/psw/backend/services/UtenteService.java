@@ -5,7 +5,6 @@ import it.psw.backend.support.exceptions.UtenteEsistenteException;
 import it.psw.backend.support.exceptions.UtenteNonEsistenteException;
 import it.psw.backend.model.Utente;
 import it.psw.backend.repositories.UtenteRepository;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -26,17 +25,12 @@ import org.keycloak.representations.idm.UserRepresentation;
 
 import javax.ws.rs.core.Response;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
 
 @Service
 public class UtenteService {
-    //@Autowired
-    //private UtenteRepository utenteRepository;
-
-
 
 
     @Value("${keycloak.auth-server-url}")

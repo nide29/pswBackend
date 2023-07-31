@@ -12,9 +12,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-//@EqualsAndHashCode
 @ToString
-//@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "prodotto_nel_carrello", schema = "psw")
 public class ProdottoNelCarrello implements Serializable {
@@ -30,13 +28,11 @@ public class ProdottoNelCarrello implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "prodotto")
-    //@JsonBackReference
     private Prodotto prodotto;
 
     @ManyToOne
     @JoinColumn(name = "ordine")
     @JsonIgnore
-    //@JsonBackReference
     private Ordine ordine;
 
 
@@ -45,6 +41,5 @@ public class ProdottoNelCarrello implements Serializable {
         this.quantita = quantita;
         this.prodotto = prodotto;
     }//Constructor
-
 
 }//ProdottoNelCarrello

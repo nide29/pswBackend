@@ -51,19 +51,19 @@ public class ProdottoController {
         return new ResponseEntity<>(Long.parseLong(id), HttpStatus.OK);
     }
 
-   @GetMapping()  // vedere la differenza tra "/nome/{nome} e "/{nome}"
+   @GetMapping()
     public ResponseEntity<?> findAll() {
         List<Prodotto> prodotti = prodottoService.findAll();
         return new ResponseEntity<>(prodotti, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")  // vedere la differenza tra "/nome/{nome} e "/{nome}"
+    @GetMapping("/{id}")
     public ResponseEntity<Prodotto> findById(@PathVariable("id") String id) {
         Prodotto prodotto = prodottoService.findById(Long.parseLong(id));
         return new ResponseEntity<>(prodotto, HttpStatus.OK);
     }
 
-    @GetMapping("/nome")  // vedere la differenza tra "/nome/{nome} e "/{nome}"
+    @GetMapping("/nome")
     public ResponseEntity<?> findByNome(@RequestParam("nome") String nome) {
         List<Prodotto> prodotti = prodottoService.findByNome(nome);
         if (prodotti.size() <= 0) {

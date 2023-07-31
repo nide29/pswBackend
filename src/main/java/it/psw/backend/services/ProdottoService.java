@@ -43,7 +43,6 @@ public class ProdottoService {
     public Prodotto findById(long id) {
         if (!prodottoRepository.existsById(id)) throw new ProdottoNotFoundException("Prodotto non esistente");
         if (!prodottoRepository.findById(id).isPresent()) throw new ProdottoNotFoundException("Prodotto non trovato");
-        //return prodottoRepository.getById(id);
         return prodottoRepository.findById(id).get();
     }//getById
 

@@ -49,19 +49,7 @@ public class Prodotto implements Serializable {
 
     @OneToMany(mappedBy = "prodotto")
     @JsonIgnore
-    //@JsonManagedReference
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodottiNelCarrello;
-
-    /*
-    public Prodotto(long id, String nome, String descrizione, String marca, String categoria, double prezzo) {
-        this.id = id;
-        this.nome = nome;
-        this.descrizione = descrizione;
-        this.marca = marca;
-        this.categoria = categoria;
-        this.prezzo = prezzo;
-    }//Constructor
-     */
 
 }//Prodotto

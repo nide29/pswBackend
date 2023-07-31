@@ -5,7 +5,6 @@ import it.psw.backend.model.Utente;
 import it.psw.backend.services.OrdineService;
 import it.psw.backend.services.UtenteService;
 import it.psw.backend.support.ResponseMessage;
-import it.psw.backend.support.exceptions.OrdineNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -70,7 +69,6 @@ public class OrdineController {
         return new ResponseEntity<>(ordini, HttpStatus.OK);
     }//findAll
 
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") String id) {
         Ordine ordine = ordineService.findById(Long.parseLong(id));
@@ -80,19 +78,8 @@ public class OrdineController {
         return new ResponseEntity<>(ordine, HttpStatus.OK);
     }//findById
 
-    /*
-    @GetMapping("/dataAcquisto")
-    public ResponseEntity<?> findByDataAcquisto(@RequestParam("dataAcquisto") String data) {
-        List<Ordine> ordini = ordineService.findByDataAcquisto(data);
-        if(ordini.size() == 0) {
-            return new ResponseEntity<>(new ResponseMessage("Nessun Risultato!"), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(ordini, HttpStatus.OK);
-    }//findByDataAcquisto
-     */
-
-    @GetMapping("/{idUtente}/start/end")
-    public ResponseEntity<?> findByPeriodo(@PathVariable("idUtente") String idUtente, @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") Date start, @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") Date end) {
+    @GetMapping("/{idUtente}/periodo")
+    public ResponseEntity<?> findByPeriodo(@PathVariable("idUtente") String idUtente, @RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start, @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) {
         Utente utente = utenteService.findById(Long.parseLong(idUtente));
         List<Ordine> risultato = ordineService.findByPeriodo(utente, start, end);
         if (risultato.size() == 0) {
@@ -112,6 +99,4 @@ public class OrdineController {
     }//findByAcquirente
 
 
-
-
-}//OrdineControllo
+}//OrdineController

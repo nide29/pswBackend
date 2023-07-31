@@ -18,4 +18,5 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
     boolean existsById(long id);
     boolean existsByNome(String nome);
     boolean existsByCognome(String conome);
-}
+
+}//UtenteRepository

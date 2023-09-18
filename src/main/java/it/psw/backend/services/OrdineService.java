@@ -6,6 +6,7 @@ import it.psw.backend.model.ProdottoNelCarrello;
 import it.psw.backend.model.Utente;
 import it.psw.backend.repositories.OrdineRepository;
 import it.psw.backend.repositories.ProdottoNelCarrelloRepository;
+import it.psw.backend.repositories.ProdottoRepository;
 import it.psw.backend.repositories.UtenteRepository;
 import it.psw.backend.support.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class OrdineService {
     @Autowired
     private ProdottoNelCarrelloRepository prodottoNelCarrelloRepository;
 
+    @Autowired
+    private ProdottoRepository prodottoRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -45,7 +49,8 @@ public class OrdineService {
                 throw new QuantitaNonDisponibileException("Quantità non sufficiente");
             }
             prodotto.setQuantita(newQuantity);
-            entityManager.merge(prodotto);
+            entityManager.refresh(entityManager.merge(prodotto));
+            prodottoRepository.save(prodotto);
         }
         return result;
     }//creaOrdine

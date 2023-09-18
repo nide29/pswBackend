@@ -40,6 +40,7 @@ public class ProdottoController {
         daAggiornare.setMarca(prodotto.getMarca());
         daAggiornare.setCategoria(prodotto.getCategoria());
         daAggiornare.setPrezzo(prodotto.getPrezzo());
+        daAggiornare.setQuantita(prodotto.getQuantita());
         long idProdotto = prodottoService.save(daAggiornare);
         return new ResponseEntity<>(idProdotto, HttpStatus.OK);
     }
@@ -51,7 +52,8 @@ public class ProdottoController {
         return new ResponseEntity<>(Long.parseLong(id), HttpStatus.OK);
     }
 
-   @GetMapping()
+
+    @GetMapping()
     public ResponseEntity<?> findAll() {
         List<Prodotto> prodotti = prodottoService.findAll();
         return new ResponseEntity<>(prodotti, HttpStatus.OK);

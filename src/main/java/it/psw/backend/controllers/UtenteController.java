@@ -52,8 +52,19 @@ public class UtenteController {
         return new ResponseEntity<>(daAggiornare.getId(), HttpStatus.OK);
     }//aggiornaUtente
 
+    /*
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancellaUtente(@PathVariable("id") String id) {
+        if(!utenteService.existsById(Long.parseLong(id))) {
+            return new ResponseEntity<>(new ResponseMessage("Utente non esistente!"), HttpStatus.OK);
+        }
+        utenteService.cancellaUtente(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }//cancellaUtente
+    */
+
+    @DeleteMapping("/id")
+    public ResponseEntity<?> cancellaUtente(@RequestParam("id") String id) {
         if(!utenteService.existsById(Long.parseLong(id))) {
             return new ResponseEntity<>(new ResponseMessage("Utente non esistente!"), HttpStatus.OK);
         }

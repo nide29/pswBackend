@@ -1,5 +1,6 @@
 package it.psw.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.io.Serializable;

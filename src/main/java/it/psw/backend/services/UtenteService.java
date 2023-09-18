@@ -70,7 +70,7 @@ public class UtenteService {
 
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(true);
-        user.setUsername(utente.getNome().toLowerCase()+utente.getCognome().toLowerCase());
+        user.setUsername(utente.getEmail());
         user.setFirstName(utente.getNome());
         user.setLastName(utente.getCognome());
         user.setEmail(utente.getEmail());
@@ -129,7 +129,7 @@ public class UtenteService {
                 .password(password_admin)
                 .build();
 
-        String username = utente.getNome().toLowerCase()+utente.getCognome().toLowerCase();
+        String username = utente.getEmail();
         List<UserRepresentation> userList = keycloak.realm(realm).users().search(username);
         for (UserRepresentation user : userList) {
             if (user.getUsername().equals(username)) {

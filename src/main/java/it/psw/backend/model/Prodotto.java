@@ -47,7 +47,14 @@ public class Prodotto implements Serializable {
     @Column(name = "quantita", nullable = false)
     private int quantita;
 
-    @OneToMany(mappedBy = "prodotto")
+
+    @Version
+    @Column(name = "version", nullable = false)
+    @JsonIgnore
+    private long version;
+
+
+    @OneToMany(mappedBy = "prodotto", cascade = CascadeType.MERGE)
     @JsonIgnore
     @ToString.Exclude
     private Set<ProdottoNelCarrello> prodottiNelCarrello;

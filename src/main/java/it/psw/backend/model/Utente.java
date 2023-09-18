@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ public class Utente implements Serializable {
     private String cognome;
 
     @Basic
+    //@Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "L'indirizzo email non è valido")
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -35,7 +37,15 @@ public class Utente implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "acquirente", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER) // aggiungere cascade = CascadeType.*
+    @Basic
+    @Column(name = "indirizzo", nullable = false)
+    private String indirizzo;
+
+    @Basic
+    @Column(name = "telefono", nullable = false)
+    private String telefono;
+
+    @OneToMany(mappedBy = "acquirente", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JsonIgnore
     @ToString.Exclude
     private Set<Ordine> ordini;
